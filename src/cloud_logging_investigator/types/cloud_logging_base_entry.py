@@ -17,3 +17,4 @@ class CloudLoggingBaseLogEntry(BaseModel):
     severity: SeverityEnum
     log_name: str
     insert_id: str
+    text_payload: str

@@ -1,4 +1,5 @@
 import datetime
+import json
 from typing import Generator, Any
 
 from google.cloud import logging
@@ -70,10 +71,11 @@ class Investigator:
                 entry_dict["text_payload"] = entry.payload
             # JsonPayload (already a dict)
             elif isinstance(entry.payload, dict):
-                entry_dict["json_payload"] = entry.payload
+                entry_dict["text_payload"] = json.dumps(entry.payload)
             else:
-                entry_dict["payload"] = str(entry.payload)
-
+                entry_dict["text_payload"] = str(entry.payload)
+        else:
+            entry_dict["text_payload"] = ""
         # Add resource info
         if entry.resource:
             entry_dict["resource"] = {
@@ -90,5 +92,5 @@ class Investigator:
             entry_dict["trace"] = entry.trace
         if entry.span_id:
             entry_dict["span_id"] = entry.span_id
-
+        print(entry)
         return entry_dict

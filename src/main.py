@@ -3,6 +3,7 @@ import pandas as pd
 import os
 
 from cloud_logging_investigator import investigator
+from src.cloud_logging_investigator.types.cloud_logging_base_entry import SeverityEnum
 
 load_dotenv()
 
@@ -13,7 +14,7 @@ def main():
     if not CLOUD_RUN_FUNCTION_NAME:
         raise ValueError(f'CLOUD_RUN_FUNCTION_NAME cannot be empty')
     log_investigator = investigator.Investigator()
-    logs = log_investigator.get_cloud_run_function_logs(CLOUD_RUN_FUNCTION_NAME)
+    logs = log_investigator.get_cloud_run_function_logs(CLOUD_RUN_FUNCTION_NAME, severity=SeverityEnum.INFO)
     df = pd.DataFrame([log.model_dump() for log in logs])
     df.to_csv(OUTPUT_FILENAME, index=False)
 
