@@ -10,6 +10,7 @@ class SeverityEnum(StrEnum):
     WARNING = "WARNING"
     ERROR = "ERROR"
     CRITICAL = "CRITICAL"
+    NOTICE = "NOTICE"
 
 
 class CloudLoggingBaseLogEntry(BaseModel):
