@@ -32,7 +32,7 @@ class Investigator:
         Args:
             function_name: Cloud Run Function name
             severity: Log severity to filter for
-            start_date: Logs starting since the start date in YYYY-MM-DD format
+            start_date: Logs starting since the start date in YYYY-MM-DD format in UTC timezone
 
         Returns:
             Generator of Cloud Run Function Log Entries
@@ -40,7 +40,7 @@ class Investigator:
         filter_string = f'resource.type="cloud_run_revision" AND resource.labels.service_name="{function_name}" AND severity>="{severity}"'
         if not start_date:
             start_date = (datetime.datetime.today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-        filter_string += f' AND timestamp > "{start_date}"'
+        filter_string += f' AND timestamp >= "{start_date}"'
 
         logger.info(f'Cloud Logging Filter String: {filter_string}')
 
@@ -92,5 +92,4 @@ class Investigator:
             entry_dict["trace"] = entry.trace
         if entry.span_id:
             entry_dict["span_id"] = entry.span_id
-        print(entry)
         return entry_dict
